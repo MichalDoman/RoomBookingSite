@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <h1><b>RoomBooking</b></h1>
+        <h3><a href="#" class="nav_link">Rooms</a></h3>
+        <h3><a href="#" class="nav_link">Search</a></h3>
+        <h3><a href="#" class="nav_link">Add Rooms</a></h3>
+    </nav>
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer>
+
+    </footer>
+</body>
+</html>

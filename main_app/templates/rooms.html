@@ -25,22 +25,25 @@
         {% else %}
             {% for room in rooms %}
                 <tr>
-                    <td><a href="#" class="room_link">{{ room.name }}</a></td>
-                    <td>{{ room.capacity }}</td>
+                    <td><a href="#" class="room_link">{{ room.0.name }}</a></td>
+                    <td>{{ room.0.capacity }}</td>
 
-                    {% for reservation in reservations %}
-                        {% if room == reservation.room %}
-                            <td>False</td>
-                        {% else %}
-                            <td>True</td>
-                        {% endif %}
-                    {% endfor %}
+                    {% if room.1 %}
+                        <td><i class="material-icons" style="color: #38A83E">check</i></td>
+                    {% else %}
+                        <td><i class="material-icons" style="color: #FF3E25">close</i></td>
+                    {% endif %}
 
-                    <td>{{ room.has_projector }}</td>
+                    {% if room.0.has_projector %}
+                        <td><i class="material-icons" style="color: #38A83E">check</i></td>
+                    {% else %}
+                        <td><i class="material-icons" style="color: #FF3E25">close</i></td>
+                    {% endif %}
+
                     <td>
                         <a href="#"><i class="material-icons" style="color: #127C99">book</i></a>
-                        <a href="#"><i class="material-icons" style="color: #38A83E">edit</i></a>
-                        <a href="/delete-room/{{ room.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
+                        <a href="/modify-room/{{ room.0.pk }}"><i class="material-icons" style="color: #38A83E">edit</i></a>
+                        <a href="/delete-room/{{ room.0.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
                     </td>
                 </tr>
             {% endfor %}

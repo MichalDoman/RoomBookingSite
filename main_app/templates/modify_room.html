@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Modify Room{% endblock %}
+
+{% block content %}
+    <h2 class="content_header_center">Change room's information:</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="content_form">
+            <span>Room name:</span>
+            <input class='input_box' type="text" name="name" value="{{ room.name }}" required>
+            <span>Room capacity:</span>
+            <input class='input_box' type="number" name="capacity" min="0" value="{{ room.capacity }}" required>
+
+            <span>Projector available:</span>
+            {% if room.has_projector %}
+                <input type="checkbox" name="has_projector" checked>
+            {% else %}
+                <input type="checkbox" name="has_projector" checked>
+            {% endif %}
+
+            <h2 class="message" style="color: {{ message_color }};">{{ message }}</h2>
+            <input class="submit_button" type="submit" value="Save">
+        </div>
+    </form>
+{% endblock %}

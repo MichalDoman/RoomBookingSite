@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rooms{% endblock %}
+
+{% block content %}
+
+    <h2 class="content_header_left">List of Rooms:</h2>
+    <table>
+        <tr>
+            <th>Room</th>
+            <th>Capacity</th>
+            <th>Availability</th>
+            <th>Projector</th>
+            <th></th>
+        </tr>
+        {% if not rooms %}
+            <tr>
+                <td colspan="5" style="padding: 80px">
+                    <a href="/add-room" class="room_link">
+                        There are no rooms yet! Click here to add a new room!
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            {% for room in rooms %}
+                <tr>
+                    <td><a href="#" class="room_link">{{ room.name }}</a></td>
+                    <td>{{ room.capacity }}</td>
+
+                    {% for reservation in reservations %}
+                        {% if room == reservation.room %}
+                            <td>False</td>
+                        {% else %}
+                            <td>True</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    <td>{{ room.has_projector }}</td>
+                    <td>
+                        <a href="#"><i class="material-icons" style="color: #127C99">book</i></a>
+                        <a href="#"><i class="material-icons" style="color: #38A83E">edit</i></a>
+                        <a href="/delete-room/{{ room.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+    </div>
+{% endblock %}

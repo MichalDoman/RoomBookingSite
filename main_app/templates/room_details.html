@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Details{% endblock %}
+
+{% block content %}
+<h2 class="content_header_center">Room details:</h2>
+<table class="reserve_table">
+    <tr>
+        <th>Name:</th>
+        <th>Capacity:</th>
+        <th>Projector:</th>
+        <th></th>
+    </tr>
+    <tr style="background-color: #FFEBA4;">
+        <td>{{ room.name }}</td>
+        <td>{{ room.capacity }}</td>
+        {% if room.has_projector %}
+        <td><i class="material-icons" style="color: #38A83E">check</i></td>
+        {% else %}
+        <td><i class="material-icons" style="color: #FF3E25">close</i></td>
+        {% endif %}
+        <td>
+            <a href="/reserve/{{ room.pk }}"><i class="material-icons" style="color: #127C99">book</i></a>
+            <a href="/modify-room/{{ room.pk }}"><i class="material-icons" style="color: #38A83E">edit</i></a>
+            <a href="/delete-room/{{ room.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
+        </td>
+    </tr>
+</table>
+
+<h2 class="content_header_center">Room Reservations:</h2>
+<table class="reserve_date_table">
+    <tr>
+        <th>Date:</th>
+        <th>Comment:</th>
+    </tr>
+    {% if reservations %}
+    {% for reservation in reservations %}
+    {% if reservation.1 %}
+    <tr class="expired_row">
+        <td>expired: {{ reservation.0.date }}</td>
+        {% if reservation.0.comment %}
+        <td>{{ reservation.0.comment }}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+    </tr>
+    {% else %}
+    <tr>
+        <td>{{ reservation.0.date }}</td>
+        {% if reservation.0.comment %}
+        <td>{{ reservation.0.comment }}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="2" style="padding: 40px">
+            There are no reservations for this room yet!
+        </td>
+    </tr>
+    {% endif %}
+</table>
+{% endblock %}

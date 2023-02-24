@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.views import View
-from datetime import datetime
+from datetime import datetime, date
 from .models import Room, Reservation
 
 
@@ -17,8 +17,6 @@ class Rooms(View):
             availability = True
             for reservation in reservations:
                 if room == reservation.room:
-                    print(f'now: {date_now}')
-                    print(reservation.date)
                     if str(date_now) == str(reservation.date):
                         availability = False
                         break
@@ -91,24 +89,59 @@ class ModifyRoom(View):
         return render(request, 'modify_room.html', ctx)
 
 
+class RoomDetails(View):
+    def get(self, request, room_id):
+        room = Room.objects.get(pk=room_id)
+        reservations = get_reservations(room_id)
+
+        ctx = {'room': room,
+               'reservations': reservations}
+        return render(request, 'room_details.html', ctx)
+
+
 class Reserve(View):
     def get(self, request, room_id):
         room = Room.objects.get(pk=room_id)
-        ctx = {'room': room}
+        date_now = datetime.today().strftime('%Y-%m-%d')
+        reservations = get_reservations(room_id)
+
+        ctx = {'room': room,
+               'date_now': date_now,
+               'reservations': reservations}
         return render(request, 'reserve.html', ctx)
 
     def post(self, request, room_id):
         room = Room.objects.get(pk=room_id)
+        date_now = datetime.today().strftime('%Y-%m-%d')
         comment = request.POST.get('comment')
-        date = request.POST.get('reservation_date')
+        reservation_date = request.POST.get('reservation_date')
 
         message = 'Room reserved successfully!'
         message_color = '#38A83E'
         try:
-            Reservation.objects.create(date=date, room=room, comment=comment)
+            Reservation.objects.create(date=reservation_date, room=room, comment=comment)
         except IntegrityError:
-            message = f"Room '{room.name}' is already reserved on {date}!"
+            message = f"Room '{room.name}' is already reserved on {reservation_date}!"
             message_color = '#FF3E25'
 
-        ctx = {'room': room, 'message': message, 'message_color': message_color}
+        reservations = get_reservations(room_id)
+        ctx = {'room': room,
+               'date_now': date_now,
+               'reservations': reservations,
+               'message': message,
+               'message_color': message_color}
         return render(request, 'reserve.html', ctx)
+
+
+def get_reservations(room_id):
+    room = Room.objects.get(pk=room_id)
+    reservations = []
+
+    for reservation in Reservation.objects.all().order_by('date'):
+        expired = False
+        if room == reservation.room:
+            if reservation.date < date.today():
+                expired = True
+            reservations.append((reservation, expired))
+
+    return reservations

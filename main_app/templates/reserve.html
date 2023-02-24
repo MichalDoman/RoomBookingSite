@@ -26,8 +26,45 @@
         <span>Add a comment to the reservation:</span>
         <textarea name="comment"></textarea>
         <span>Reservation date:</span>
-        <input class='short_input' type="date" name="reservation_date" required>
+        <input class='short_input' type="date" name="reservation_date" min="{{ date_now }}" required>
         <h2 class="message" style="color: {{ message_color }};">{{ message }}</h2>
         <input class="submit_button" type="submit" value="Reserve">
     </form>
+
+    <h2 class="content_header_center">Room Reservations:</h2>
+    <table class="reserve_date_table">
+        <tr>
+            <th>Date:</th>
+            <th>Comment:</th>
+        </tr>
+        {% if reservations %}
+            {% for reservation in reservations %}
+                {% if reservation.1 %}
+                    <tr class="expired_row">
+                        <td>expired: {{ reservation.0.date }}</td>
+                        {% if reservation.0.comment %}
+                            <td>{{ reservation.0.comment }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ reservation.0.date }}</td>
+                        {% if reservation.0.comment %}
+                            <td>{{ reservation.0.comment }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="2" style="padding: 40px">
+                    There are no reservations for this room yet!
+                </td>
+            </tr>
+        {% endif %}
+    </table>
 {% endblock %}

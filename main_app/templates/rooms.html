@@ -25,7 +25,7 @@
         {% else %}
             {% for room in rooms %}
                 <tr>
-                    <td><a href="#" class="room_link">{{ room.0.name }}</a></td>
+                    <td><a href="/room-details/{{ room.0.pk }}" class="room_link">{{ room.0.name }}</a></td>
                     <td>{{ room.0.capacity }}</td>
 
                     {% if room.1 %}

@@ -131,6 +131,7 @@ table:last-child {
 
 .room_link:hover {
   text-decoration: underline;
+  font-size: 20px;
 }
 
 th {
@@ -163,8 +164,25 @@ td {
 }
 
 .reserve_table {
-  margin: 0;
+  margin: 0 5%;
   padding: 0;
+}
+
+.reserve_date_table {
+  margin: 0 20%;
+  margin-bottom: 50px;
+}
+
+.expired_row {
+  background-color: #FF5D4A;
+}
+
+.expired_row td {
+  color: white;
+}
+
+.expired_row:hover {
+  background-color: #B84235;
 }
 
 /* Forms styles --------------------------------------------------------------------------------- */
@@ -223,6 +241,10 @@ input[type='checkbox']:after {
   margin: 30px 10px;
   margin-bottom: 80px;
   padding: 10px 60px;
+}
+
+.submit_button[value='Reserve'] {
+  margin-bottom: 20px;
 }
 
 .submit_button:hover {

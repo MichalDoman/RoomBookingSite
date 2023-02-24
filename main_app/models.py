@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -8,9 +10,9 @@ class Room(models.Model):
 
 
 class Reservation(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     comment = models.TextField(null=True)
 
     class Meta:
-        unique_together = ('date', 'room_id')
+        unique_together = ('date', 'room')

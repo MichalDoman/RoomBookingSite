@@ -161,6 +161,12 @@ td {
 .material-icons:hover {
   font-size: 30px;
 }
+
+.reserve_table {
+  margin: 0;
+  padding: 0;
+}
+
 /* Forms styles --------------------------------------------------------------------------------- */
 .content_form {
   display: flex;
@@ -170,7 +176,7 @@ td {
   margin: 0 30%;
 }
 
-.input_box {
+.input_box, .short_input, textarea {
   width: 350px;
   padding: 10px;
   border: 2px solid #D2D4D9;
@@ -180,6 +186,10 @@ td {
   font-size: 16px;
   font-weight: 600;
   font-style: italic;
+}
+
+.short_input {
+  width: 150px;
 }
 
 .content_form > span {

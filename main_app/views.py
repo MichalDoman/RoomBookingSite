@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.views import View
+from datetime import datetime
 from .models import Room, Reservation
 
 
@@ -9,17 +10,20 @@ class Rooms(View):
         rooms = Room.objects.all()
         reservations = Reservation.objects.all()
 
-        # Check for room availability:
+        # Check for room availability (False if room is not available today):
+        date_now = datetime.today().strftime('%Y-%m-%d')
         rooms_tuple_list = []
-        availability = True
         for room in rooms:
+            availability = True
             for reservation in reservations:
                 if room == reservation.room:
-                    availability = False
-                    break
+                    print(f'now: {date_now}')
+                    print(reservation.date)
+                    if str(date_now) == str(reservation.date):
+                        availability = False
+                        break
             rooms_tuple_list.append((room, availability))
 
-        reservations = [1]
         ctx = {'rooms': rooms_tuple_list}
         return render(request, 'rooms.html', ctx)
 
@@ -85,3 +89,26 @@ class ModifyRoom(View):
 
         ctx = {'message': message, 'message_color': message_color}
         return render(request, 'modify_room.html', ctx)
+
+
+class Reserve(View):
+    def get(self, request, room_id):
+        room = Room.objects.get(pk=room_id)
+        ctx = {'room': room}
+        return render(request, 'reserve.html', ctx)
+
+    def post(self, request, room_id):
+        room = Room.objects.get(pk=room_id)
+        comment = request.POST.get('comment')
+        date = request.POST.get('reservation_date')
+
+        message = 'Room reserved successfully!'
+        message_color = '#38A83E'
+        try:
+            Reservation.objects.create(date=date, room=room, comment=comment)
+        except IntegrityError:
+            message = f"Room '{room.name}' is already reserved on {date}!"
+            message_color = '#FF3E25'
+
+        ctx = {'room': room, 'message': message, 'message_color': message_color}
+        return render(request, 'reserve.html', ctx)

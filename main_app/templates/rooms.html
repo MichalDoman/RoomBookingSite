@@ -41,7 +41,7 @@
                     {% endif %}
 
                     <td>
-                        <a href="#"><i class="material-icons" style="color: #127C99">book</i></a>
+                        <a href="/reserve/{{ room.0.pk }}"><i class="material-icons" style="color: #127C99">book</i></a>
                         <a href="/modify-room/{{ room.0.pk }}"><i class="material-icons" style="color: #38A83E">edit</i></a>
                         <a href="/delete-room/{{ room.0.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
                     </td>
@@ -49,5 +49,4 @@
             {% endfor %}
         {% endif %}
     </table>
-    </div>
 {% endblock %}

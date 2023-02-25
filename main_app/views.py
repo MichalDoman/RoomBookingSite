@@ -145,3 +145,51 @@ def get_reservations(room_id):
             reservations.append((reservation, expired))
 
     return reservations
+
+
+class SearchRoom(View):
+    def get(self, request):
+        date_now = datetime.today().strftime('%Y-%m-%d')
+        message = 'Searching results will be shown here.'
+        ctx = {'date_now': date_now,
+               'message': message}
+        return render(request, 'search_room.html', ctx)
+
+    def post(self, request):
+        date_now = datetime.today().strftime('%Y-%m-%d')
+        availability_date = request.POST.get('availability_date')
+        message = ''
+        name = request.POST.get('name')
+        capacity = request.POST.get('capacity')
+        has_projector = request.POST.get('has_projector')
+        if has_projector:
+            has_projector = True
+        else:
+            has_projector = False
+
+        # Filter rooms:
+        rooms = Room.objects.all().filter(name__contains=name)
+        if capacity:
+            rooms = rooms.filter(capacity__gte=capacity)
+        if has_projector:
+            rooms = rooms.filter(has_projector=has_projector)
+        # Check for availability:
+        rooms_list = []
+        reservations = Reservation.objects.all()
+        for room in rooms:
+            availability = True
+            for reservation in reservations:
+                if room == reservation.room:
+                    if str(availability_date) == str(reservation.date):
+                        availability = False
+                        break
+            if availability:
+                rooms_list.append(room)
+
+        if not rooms:
+            message = "There are no rooms matching these requirements"
+
+        ctx = {'rooms': rooms_list,
+               'date_now': date_now,
+               'message': message}
+        return render(request, 'search_room.html', ctx)

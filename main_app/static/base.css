@@ -159,8 +159,14 @@ td {
   padding: 0px 5px;
 }
 
-.material-icons:hover {
-  font-size: 30px;
+.table_head_box {
+  display: flex;
+  flex-direction: row;
+}
+
+.sort_arrows_box {
+  display: flex;
+  flex-direction: column;
 }
 
 .reserve_table {

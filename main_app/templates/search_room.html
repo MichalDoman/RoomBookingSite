@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+    <h2 class="content_header_center">Search:</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="content_form">
+            <input class='input_box' type="text" name="name" placeholder="room name">
+            <input class='short_input' type="number" name="capacity" placeholder="min. capacity">
+            <span>Reservation date:</span>
+            <input class='short_input' type="date" name="availability_date" min="{{ date_now }}">
+            <span>Search only for rooms with a projector:</span>
+            <input type="checkbox" name="has_projector">
+            <input class="submit_button" type="submit" value="Search">
+        </div>
+    </form>
+    <table>
+        <tr>
+            <th>Room</th>
+            <th>Capacity</th>
+            <th>Projector</th>
+            <th></th>
+        </tr>
+        {% if not rooms %}
+            <tr>
+                <td colspan="4" style="padding: 40px">
+                    {{ message }}
+                </td>
+            </tr>
+        {% else %}
+            {% for room in rooms %}
+                <tr>
+                    <td><a href="/room-details/{{ room.pk }}" class="room_link">{{ room.name }}</a></td>
+                    <td>{{ room.capacity }}</td>
+
+                    {% if room.has_projector %}
+                        <td><i class="material-icons" style="color: #38A83E">check</i></td>
+                    {% else %}
+                        <td><i class="material-icons" style="color: #FF3E25">close</i></td>
+                    {% endif %}
+
+                    <td>
+                        <a href="/reserve/{{ room.pk }}"><i class="material-icons" style="color: #127C99">book</i></a>
+                        <a href="/modify-room/{{ room.pk }}"><i class="material-icons" style="color: #38A83E">edit</i></a>
+                        <a href="/delete-room/{{ room.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+{% endblock %}

@@ -115,7 +115,7 @@ table, th, td {
   border-bottom: 1px solid #D2D4D9;
   border-collapse: collapse;
   text-align: center;
-  padding: 16px 60px;
+  padding: 16px 40px;
 }
 
 table:last-child {
@@ -161,14 +161,34 @@ td {
 
 .table_head_box {
   display: flex;
+  justify-content: center;
   flex-direction: row;
+  align-items: center;
+}
+
+.table_head_box > span {
+  line-height: 1;
 }
 
 .sort_arrows_box {
   display: flex;
   flex-direction: column;
+  line-height: 0;
+  padding: 0 10px;
 }
 
+.sort_arrows_box > a > i {
+  font-size: 32px;
+  font-weight: 500;
+}
+.sort_arrows_box > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  height: 25px;
+  width: 20px;
+}
 .reserve_table {
   margin: 0 5%;
   padding: 0;

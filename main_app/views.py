@@ -7,7 +7,13 @@ from .models import Room, Reservation
 
 class Rooms(View):
     def get(self, request):
-        rooms = Room.objects.all()
+        sort_by = 'pk'
+        if 'sort_by' in request.session:
+            sort_by = request.session.get('sort_by')
+            if 'availability' in sort_by:
+                sort_by = 'pk'
+
+        rooms = Room.objects.all().order_by(sort_by)
         reservations = Reservation.objects.all()
 
         # Check for room availability (False if room is not available today):
@@ -22,8 +28,19 @@ class Rooms(View):
                         break
             rooms_tuple_list.append((room, availability))
 
+        # sort by availability:
+        if request.session.get('sort_by') == 'availability':
+            rooms_tuple_list.sort(key=lambda a: a[1])
+        elif request.session.get('sort_by') == '-availability':
+            rooms_tuple_list.sort(key=lambda a: a[1], reverse=True)
+
         ctx = {'rooms': rooms_tuple_list}
         return render(request, 'rooms.html', ctx)
+
+
+def sort_rooms(request, sort_by):
+    request.session['sort_by'] = sort_by
+    return redirect('/')
 
 
 class AddRoom(View):

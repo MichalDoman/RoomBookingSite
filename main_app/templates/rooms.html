@@ -4,22 +4,45 @@
 {% block title %}Rooms{% endblock %}
 
 {% block content %}
-
     <h2 class="content_header_left">List of Rooms:</h2>
     <table>
         <tr>
             <th>
                 <div class="table_head_box">
-                    Room
+                    <span>Room</span>
                     <div  class="sort_arrows_box">
-                        <a href="#"><i class="material-icons" style="color: #127C99">arrow_drop_up</i></a>
-                        <a href="#"><i class="material-icons" style="color: #127C99">arrow_drop_down</i></a>
+                        <a href="/sort-rooms/name"><i class="material-icons" style="color: #127C99">arrow_drop_up</i></a>
+                        <a href="/sort-rooms/-name"><i class="material-icons" style="color: #127C99">arrow_drop_down</i></a>
                     </div>
                 </div>
             </th>
-            <th>Capacity</th>
-            <th>Availability</th>
-            <th>Projector</th>
+            <th>
+                <div class="table_head_box">
+                    <span>Capacity</span>
+                    <div  class="sort_arrows_box">
+                        <a href="/sort-rooms/capacity"><i class="material-icons" style="color: #127C99">arrow_drop_up</i></a>
+                        <a href="/sort-rooms/-capacity"><i class="material-icons" style="color: #127C99">arrow_drop_down</i></a>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="table_head_box">
+                    <span>Availability</span>
+                    <div  class="sort_arrows_box">
+                        <a href="/sort-rooms/availability"><i class="material-icons" style="color: #127C99">arrow_drop_up</i></a>
+                        <a href="/sort-rooms/-availability"><i class="material-icons" style="color: #127C99">arrow_drop_down</i></a>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="table_head_box">
+                    <span>Projector</span>
+                    <div  class="sort_arrows_box">
+                        <a href="/sort-rooms/has_projector"><i class="material-icons" style="color: #127C99">arrow_drop_up</i></a>
+                        <a href="/sort-rooms/-has_projector"><i class="material-icons" style="color: #127C99">arrow_drop_down</i></a>
+                    </div>
+                </div>
+            </th>
             <th></th>
         </tr>
         {% if not rooms %}

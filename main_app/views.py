@@ -7,11 +7,9 @@ from .models import Room, Reservation
 
 class Rooms(View):
     def get(self, request):
-        sort_by = 'pk'
-        if 'sort_by' in request.session:
-            sort_by = request.session.get('sort_by')
-            if 'availability' in sort_by:
-                sort_by = 'pk'
+        sort_by = request.GET.get('sort_by', 'pk')
+        if 'availability' in sort_by:
+            sort_by = 'pk'
 
         rooms = Room.objects.all().order_by(sort_by)
         reservations = Reservation.objects.all()
@@ -29,18 +27,13 @@ class Rooms(View):
             rooms_tuple_list.append((room, availability))
 
         # sort by availability:
-        if request.session.get('sort_by') == 'availability':
+        if request.GET.get('sort_by') == 'availability':
             rooms_tuple_list.sort(key=lambda a: a[1])
-        elif request.session.get('sort_by') == '-availability':
+        elif request.GET.get('sort_by') == '-availability':
             rooms_tuple_list.sort(key=lambda a: a[1], reverse=True)
 
         ctx = {'rooms': rooms_tuple_list}
         return render(request, 'rooms.html', ctx)
-
-
-def sort_rooms(request, sort_by):
-    request.session['sort_by'] = sort_by
-    return redirect('/')
 
 
 class AddRoom(View):
@@ -185,7 +178,7 @@ class SearchRoom(View):
             has_projector = False
 
         # Filter rooms:
-        rooms = Room.objects.all().filter(name__contains=name)
+        rooms = Room.objects.all().filter(name__icontains=name)
         if capacity:
             rooms = rooms.filter(capacity__gte=capacity)
         if has_projector:

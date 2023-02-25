@@ -9,5 +9,4 @@ urlpatterns = [
     path('reserve/<int:room_id>', Reserve.as_view(), name='reserve'),
     path('room-details/<int:room_id>', RoomDetails.as_view(), name='room_details'),
     path('search-room', SearchRoom.as_view(), name='search_room'),
-    path('sort-rooms/<str:sort_by>', sort_rooms, name='sort_rooms')
 ]

@@ -7,7 +7,7 @@
 
     <h2 class="content_header_center">Search:</h2>
 
-    <form method="POST">
+    <form method="POST" action="#results">
         {% csrf_token %}
         <div class="content_form">
             <input class='input_box' type="text" name="name" placeholder="room name">
@@ -16,7 +16,7 @@
             <input class='short_input' type="date" name="availability_date" min="{{ date_now }}">
             <span>Search only for rooms with a projector:</span>
             <input type="checkbox" name="has_projector">
-            <input class="submit_button" type="submit" value="Search">
+            <input class="submit_button" type="submit" value="Search"  id="results">
         </div>
     </form>
     <table>

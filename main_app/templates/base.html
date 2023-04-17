@@ -13,9 +13,9 @@
     <h1 class="logo"><u>RoomBooking</u></h1>
     <nav>
         <ul class="nav_links">
-            <li><a href="/">Rooms</a></li>
-            <li><a href="/search-room">Search</a></li>
-            <li><a href="/add-room">Add Rooms</a></li>
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'search_room' %}">Search</a></li>
+            <li><a href="{% url 'add_room' %}">Add Rooms</a></li>
         </ul>
     </nav>
 </header>

@@ -48,7 +48,7 @@
         {% if not rooms %}
             <tr>
                 <td colspan="5" style="padding: 80px">
-                    <a href="/add-room" class="room_link">
+                    <a href="{% url "add_room" %}" class="room_link">
                         There are no rooms yet! Click here to add a new room!
                     </a>
                 </td>
@@ -56,7 +56,7 @@
         {% else %}
             {% for room in rooms %}
                 <tr>
-                    <td><a href="/room-details/{{ room.0.pk }}" class="room_link">{{ room.0.name }}</a></td>
+                    <td><a href="{% url 'room_details' room.0.pk %}" class="room_link">{{ room.0.name }}</a></td>
                     <td>{{ room.0.capacity }}</td>
 
                     {% if room.1 %}
@@ -72,9 +72,9 @@
                     {% endif %}
 
                     <td>
-                        <a href="/reserve/{{ room.0.pk }}"><i class="material-icons" style="color: #127C99">book</i></a>
-                        <a href="/modify-room/{{ room.0.pk }}"><i class="material-icons" style="color: #38A83E">edit</i></a>
-                        <a href="/delete-room/{{ room.0.pk }}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
+                        <a href="{% url 'reserve' room.0.pk %}"><i class="material-icons" style="color: #127C99">book</i></a>
+                        <a href="{% url 'modify_room' room.0.pk %}"><i class="material-icons" style="color: #38A83E">edit</i></a>
+                        <a href="{% url 'delete_room' room.0.pk %}"><i class="material-icons" style="color: #FF3E25">delete</i></a>
                     </td>
                 </tr>
             {% endfor %}

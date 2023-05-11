@@ -85,7 +85,7 @@ li a{
 }
 
 .content_header_left {
-  align-self: left;
+  align-self: start;
   margin: 5px 5%;
   margin-top: 5%;
   color: #024959;
@@ -244,7 +244,7 @@ td {
 }
 
 input[type='checkbox']{
-  display; flex;
+  display: flex;
   margin: 0px;
   height: 30px;
   width: 30px;

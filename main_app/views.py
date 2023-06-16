@@ -6,7 +6,9 @@ from .models import Room, Reservation
 
 
 class Rooms(View):
+    """Room list view (home)"""
     def get(self, request):
+        """Check room availability and display it. Sort displayed rooms according to sort_by url variable"""
         sort_by = request.GET.get('sort_by', 'pk')
         if 'availability' in sort_by:
             sort_by = 'pk'
@@ -37,10 +39,13 @@ class Rooms(View):
 
 
 class AddRoom(View):
+    """View for adding new rooms"""
     def get(self, request):
+        """render proper template"""
         return render(request, 'add_room.html')
 
     def post(self, request):
+        """create Room object with form data / display custom messages"""
         name = request.POST.get('name')
         capacity = request.POST.get('capacity')
         has_projector = request.POST.get('has_projector')
@@ -62,6 +67,7 @@ class AddRoom(View):
 
 
 class DeleteRoom(View):
+    """Delete Room object on GET"""
     def get(self, request, room_id):
         room = Room.objects.get(pk=room_id)
         room.delete()
@@ -70,11 +76,13 @@ class DeleteRoom(View):
 
 class ModifyRoom(View):
     def get(self, request, room_id):
+        """render template with room modifying form"""
         room = Room.objects.get(pk=room_id)
         ctx = {'room': room}
         return render(request, 'modify_room.html', ctx)
 
     def post(self, request, room_id):
+        """modify  existing room / display custom message"""
         room = Room.objects.get(pk=room_id)
         name = request.POST.get('name')
         capacity = request.POST.get('capacity')
@@ -101,6 +109,7 @@ class ModifyRoom(View):
 
 class RoomDetails(View):
     def get(self, request, room_id):
+        """render template with room details"""
         room = Room.objects.get(pk=room_id)
         reservations = get_reservations(room_id)
 
@@ -110,7 +119,10 @@ class RoomDetails(View):
 
 
 class Reserve(View):
+    """View for managing reservations"""
     def get(self, request, room_id):
+        """render template for reserving rooms add current date to context to change
+        display of expired reservations"""
         room = Room.objects.get(pk=room_id)
         date_now = datetime.today().strftime('%Y-%m-%d')
         reservations = get_reservations(room_id)
@@ -121,6 +133,7 @@ class Reserve(View):
         return render(request, 'reserve.html', ctx)
 
     def post(self, request, room_id):
+        """Reserve a room basing on the form data"""
         room = Room.objects.get(pk=room_id)
         date_now = datetime.today().strftime('%Y-%m-%d')
         comment = request.POST.get('comment')
@@ -144,6 +157,11 @@ class Reserve(View):
 
 
 def get_reservations(room_id):
+    """collects all the reservations done for a room. Checks whether any of them is already expired.
+
+    :return a list of tuples. First element is a reservation,
+    the other is a boolean that tells if the reservation is future or not."""
+
     room = Room.objects.get(pk=room_id)
     reservations = []
 
@@ -158,7 +176,9 @@ def get_reservations(room_id):
 
 
 class SearchRoom(View):
+    """A separate View for searching for rooms"""
     def get(self, request):
+        """render the template for searching rooms"""
         date_now = datetime.today().strftime('%Y-%m-%d')
         message = 'Searching results will be shown here.'
         ctx = {'date_now': date_now,
@@ -166,6 +186,7 @@ class SearchRoom(View):
         return render(request, 'search_room.html', ctx)
 
     def post(self, request):
+        """display search results matching given filters."""
         date_now = datetime.today().strftime('%Y-%m-%d')
         availability_date = request.POST.get('availability_date')
         message = ''
